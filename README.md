@@ -5,6 +5,8 @@ homework assignment done in LaTeX.
 
 ## Installation
 
+First, you must have Yeoman installed.
+
 ```bash
 yarn global add yo
 ```
@@ -34,9 +36,9 @@ yo latex-homework <homework-number> <questions> <name>
 
 Where `<homework-number>` and `<questions>` are positive integers,
 the first representing which homework assignment, and the second
-representing the number of questions.
+representing the number of questions.  `<name>` is a string:
+the author name which will appear on the paper.
 
 ## Contributing
 
-If you would like to make this better (there is a lot that could be
-added), then submit a pull request at the [github repo](https://github.com/terrencepreilly/generator-latex-homework).
+If you would like embetter this -- and there is much embetterment to be had -- then submit a pull request at the [github repo](https://github.com/terrencepreilly/generator-latex-homework).
