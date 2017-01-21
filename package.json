@@ -1,0 +1,14 @@
+{
+  "name": "generator-latex-homework",
+  "version": "0.0.0",
+  "description": "Generates a template for homework latex documents.",
+  "files": [
+    "generators"
+  ],
+  "repository": {},
+  "author": "Terrence Reilly",
+  "license": "MIT",
+  "dependencies": {
+    "yeoman-generator": "^1.0.1"
+  }
+}
