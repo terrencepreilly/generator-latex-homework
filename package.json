@@ -1,6 +1,6 @@
 {
   "name": "generator-latex-homework",
-  "version": "0.0.2",
+  "version": "0.0.3",
   "description": "Generates a template for homework latex documents.",
   "files": [
     "generators",
