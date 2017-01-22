@@ -1,3 +1,5 @@
+/* jshint node: true */
+'use strict';
 /*
  * This generator sets up the skeleton for a homework assignment
  * written in latex.  Each question is placed in an individual
