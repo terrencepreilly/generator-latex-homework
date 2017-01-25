@@ -1,4 +1,4 @@
-# Latex Homework Generator
+# LaTeX Homework Generator
 
 This [Yeoman](http://yeoman.io/) generator creates the skeleton for a
 homework assignment done in LaTeX.
@@ -38,6 +38,23 @@ Where `<homework-number>` and `<questions>` are positive integers,
 the first representing which homework assignment, and the second
 representing the number of questions.  `<name>` is a string:
 the author name which will appear on the paper.
+
+## Notes on the LaTeX document
+
+The base LaTeX document makes use of several useful packages which should
+be installed:
+
+- amsmath
+    - For Mathematical formulas.
+- graphicx
+    - For including images.
+- geometry
+    - For image layout.
+- minted
+    - For source code (requires Python: uses Pygments to render
+      the code with syntax highlighting.)
+- hyperref
+    - For hyperlink references.
 
 ## Contributing
 

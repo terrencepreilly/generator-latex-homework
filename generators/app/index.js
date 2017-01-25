@@ -7,17 +7,21 @@
  * utility.
  */
 var Generator = require('yeoman-generator');
+var path = require('path');
+var fs = require('fs');
 
 module.exports = class extends Generator {
     constructor(args, opts) {
         super(args, opts);
+
+        this.highest = this._find_highest_previous_hw_file() || 1;
 
         // Create the .yo-rc.json file
         this.config.save();
         this.argument('homework', {
             type: Number,
             required: false,
-            desc: 'The number of the homework assignment (e.g. 1, 2, etc.)'
+            desc: 'The number of the homework assignment (e.g. 1, 2, etc.)',
         });
         this.argument('questions', {
             type: Number,
@@ -30,6 +34,24 @@ module.exports = class extends Generator {
             desc: 'The author name to display on the paper.',
             store: true
         });
+
+        this.base_source = path.dirname(this.sourceRoot());
+    }
+
+    _find_highest_previous_hw_file() {
+        let HW = /hw([0-9]+)/;
+        let isHw = (filename) => {
+            return filename.match(HW);
+        };
+        let extractHW = (filename) => {
+            return parseInt(filename.match(HW)[1]);
+        };
+        let getGreaterThan = (x, y) => x > y ? x : y;
+        let l = fs.readdirSync(this.destinationRoot());
+        let nums = l.filter(isHw).map(extractHW);
+        if (nums.length > 0)
+            return nums.reduce(getGreaterThan);
+        return null;
     }
 
     _ask_for_int(name, message, adefault) {
@@ -52,7 +74,7 @@ module.exports = class extends Generator {
         return this._ask_for_int(
             'homework',
             'Which homework is this? (Integer)',
-            1);
+            this.highest+1);
     }
 
     getQuestionNumber() {
@@ -83,21 +105,30 @@ module.exports = class extends Generator {
             'author': this.options.author
         };
         this.log(opts);
-        var sub = 'hw' + this.options.homework + '/';
-
+        var src = 'hw' + this.options.homework + '/src/';
+        var images = 'hw' + this.options.homework + '/images/';
         this.fs.copyTpl(
             this.templatePath('Makefile.ejs'),
-            this.destinationPath(sub + 'Makefile'),
+            this.destinationPath(src + 'Makefile'),
             opts
             );
         this.fs.copyTpl(
             this.templatePath('hw.ejs'),
-            this.destinationPath(sub + 'hw' + this.options.homework + '.tex'),
+            this.destinationPath(src + 'hw' + this.options.homework + '.tex'),
             opts
+            );
+        this.fs.copyTpl(
+            this.templatePath('blank.ejs'),
+            this.destinationPath(src + 'hw' + this.options.homework + '.bib'),
+            {'description': '% Citations'}
+            );
+        this.fs.copy(
+            path.join(this.base_source, 'files/convert.py'),
+            this.destinationPath(images + 'convert.py')
             );
         for (let i = 1; i <= this.options.questions; i++) {
             this.fs.write(
-                this.destinationPath(sub + 'questions/question_' + i + '.tex'),
+                this.destinationPath(src + 'questions/question_' + i + '.tex'),
                 ''
                 );
         }
