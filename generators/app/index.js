@@ -34,6 +34,12 @@ module.exports = class extends Generator {
             desc: 'The author name to display on the paper.',
             store: true
         });
+        this.argument('course', {
+            type: String,
+            required: false,
+            desc: 'The course name to display in the title.',
+            store: false,
+        });
 
         this.base_source = path.dirname(this.sourceRoot());
     }
@@ -97,12 +103,25 @@ module.exports = class extends Generator {
         });
     }
 
+    getCourseName() {
+        if (this.options.course)
+            return;
+        return this.prompt([{
+            type: 'input',
+            name: 'course',
+            message: 'What is the course?',
+            store: true
+        }]).then((answer) => {
+            this.options.course = answer.course;
+        });
+    }
 
     writing() {
         var opts = {
             'homework': this.options.homework,
             'questions': this.options.questions,
-            'author': this.options.author
+            'author': this.options.author,
+            'course': this.options.course,
         };
         this.log(opts);
         var src = 'hw' + this.options.homework + '/src/';
@@ -125,6 +144,10 @@ module.exports = class extends Generator {
         this.fs.copy(
             path.join(this.base_source, 'files/convert.py'),
             this.destinationPath(images + 'convert.py')
+            );
+        this.fs.copy(
+            path.join(this.base_source, 'files/homework_title.tex'),
+            this.destinationPath(src + 'homework_title.tex')
             );
         for (let i = 1; i <= this.options.questions; i++) {
             this.fs.write(
