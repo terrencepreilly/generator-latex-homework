@@ -18,6 +18,12 @@ module.exports = class extends Generator {
 
         // Create the .yo-rc.json file
         this.config.save();
+        this.option('base', {
+            type: String,
+            required: false,
+            desc: 'The base string for these numbered assignments.',
+            default: 'hw'
+        });
         this.argument('homework', {
             type: Number,
             required: false,
@@ -118,14 +124,15 @@ module.exports = class extends Generator {
 
     writing() {
         var opts = {
+            'base': this.options.base,
             'homework': this.options.homework,
             'questions': this.options.questions,
             'author': this.options.author,
             'course': this.options.course,
         };
         this.log(opts);
-        var src = 'hw' + this.options.homework + '/src/';
-        var images = 'hw' + this.options.homework + '/images/';
+        var src = this.options.base + this.options.homework + '/src/';
+        var images = this.options.base + this.options.homework + '/images/';
         this.fs.copyTpl(
             this.templatePath('Makefile.ejs'),
             this.destinationPath(src + 'Makefile'),
@@ -133,12 +140,12 @@ module.exports = class extends Generator {
             );
         this.fs.copyTpl(
             this.templatePath('hw.ejs'),
-            this.destinationPath(src + 'hw' + this.options.homework + '.tex'),
+            this.destinationPath(src + this.options.base + this.options.homework + '.tex'),
             opts
             );
         this.fs.copyTpl(
             this.templatePath('blank.ejs'),
-            this.destinationPath(src + 'hw' + this.options.homework + '.bib'),
+            this.destinationPath(src + this.options.base + this.options.homework + '.bib'),
             {'description': '% Citations'}
             );
         this.fs.copy(

@@ -1,4 +1,4 @@
-HW = hw<%=homework %>
+HW = <%=base%><%=homework %>
 Q = questions/question_
 QUESTIONS = <% for (var i = 1; i <= questions; i++) { %> $(Q)<%= i %>.tex<% } %>
 UNAME := $(shell uname)
