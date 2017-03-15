@@ -133,6 +133,7 @@ module.exports = class extends Generator {
         this.log(opts);
         var src = this.options.base + this.options.homework + '/src/';
         var images = this.options.base + this.options.homework + '/images/';
+        var dist = this.options.base + this.options.homework + '/dist/';
         this.fs.copyTpl(
             this.templatePath('Makefile.ejs'),
             this.destinationPath(src + 'Makefile'),
@@ -148,9 +149,18 @@ module.exports = class extends Generator {
             this.destinationPath(src + this.options.base + this.options.homework + '.bib'),
             {'description': '% Citations'}
             );
+        this.fs.copyTpl(
+            this.templatePath('blank.ejs'),
+            this.destinationPath(dist + 'about.txt'),
+            {'description': 'The distribution should go here.'}
+            );
         this.fs.copy(
             path.join(this.base_source, 'files/convert.py'),
             this.destinationPath(images + 'convert.py')
+            );
+        this.fs.copy(
+            path.join(this.base_source, 'files/Makefile'),
+            this.destinationPath(images + 'Makefile')
             );
         this.fs.copy(
             path.join(this.base_source, 'files/homework_title.tex'),
